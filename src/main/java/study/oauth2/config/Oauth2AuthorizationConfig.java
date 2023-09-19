@@ -27,6 +27,7 @@ public class Oauth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     private final AuthenticationManager authenticationManager; // grant_type 변경 및 추가 사용을 위해서는 필수
     private final DataSource dataSource;
     private final IAMUserDetailService iamUserDetailService;
+    private final String jwtSignKey = "fn2jnbgfk2jbgfk2j";
 
     //endPoint 추가를 위한 설정
     @Override
@@ -49,7 +50,8 @@ public class Oauth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("jwtKey");
+        //비밀키 생성
+        jwtAccessTokenConverter.setSigningKey(jwtSignKey);
         return jwtAccessTokenConverter;
     }
 
