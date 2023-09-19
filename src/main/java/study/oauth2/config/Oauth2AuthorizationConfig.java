@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public class Oauth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager; // grant_type 변경 및 추가 사용을 위해서는 필수
     private final DataSource dataSource;
     private final IAMUserDetailService iamUserDetailService;
 
@@ -32,10 +32,10 @@ public class Oauth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
-                //.tokenStore(tokenStore())
-                .authenticationManager(authenticationManager);
-                //.accessTokenConverter(jwtAccessTokenConverter())
-                //.userDetailsService(iamUserDetailService);
+                .tokenStore(tokenStore())
+                .authenticationManager(authenticationManager)
+                .accessTokenConverter(jwtAccessTokenConverter())
+                .userDetailsService(iamUserDetailService);
 
     }
 
