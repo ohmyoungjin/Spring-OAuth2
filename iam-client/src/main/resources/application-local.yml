@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    oauth2:
+      resource:
+        token-info-uri: http://localhost:8081/oauth/check_token

@@ -1,47 +1,68 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.15'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
+//plugins {
+//	id 'java'
+//	id 'org.springframework.boot' version '2.7.15'
+//	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//}
+//
+//group = 'study'
+//version = '0.0.1-SNAPSHOT'
+//
+//java {
+//	sourceCompatibility = '17'
+//}
+//
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
 
-group = 'study'
-version = '0.0.1-SNAPSHOT'
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
 
-java {
-	sourceCompatibility = '17'
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+	dependencies {
+		classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.7.15'
 	}
 }
 
 repositories {
 	mavenCentral()
 }
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'groovy'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// Sprint Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	// OAuth2
-	implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.5.RELEASE'
-	// JSON String-> Java Object
-	implementation 'com.google.code.gson:gson'
-	//mysql
-	implementation 'mysql:mysql-connector-java:8.0.28'
-	// Java 11 exception 해결
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.1'
-	// JWT
-	implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+	group = 'study'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '11'
 
-tasks.named('test') {
-	useJUnitPlatform()
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		// Sprint Security
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+		// OAuth2
+		implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.5.RELEASE'
+		// JSON String-> Java Object
+		implementation 'com.google.code.gson:gson'
+		//mysql
+		//implementation 'mysql:mysql-connector-java:8.0.28'
+		// Java 11 exception 해결
+		implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+		implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.1'
+		// JWT
+		implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
 }
