@@ -9,10 +9,11 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-@EnableResourceServer
+@EnableResourceServer //권한 인증이 필요한 서버 어디에서 권한 인증을 받을지는 application.yml 기재돼있음.
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+    /* oauth Server 랑 동일한 key 값을 가지고 있어야 한다 !*/
     private final String jwtSignKey = "fn2jnbgfk2jbgfk2j";
 
     /* token store로 JWTTokenStore를 사용하겠다 */
@@ -29,10 +30,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return jwtAccessTokenConverter;
     }
 
+    /*자원 서버(@EnableResourceServer annotation 붙은) 접근 권한 설정*/
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/v1/users").access("#oauth2.hasScope('read')")
+                .antMatchers("/v1/users").access("#oauth2.hasScope('read')") // security 검증 받을 uri(/v1/users) 권한은 read 일 때만 접근 가능 ! => 인가 기능
                 .anyRequest().authenticated();
     }
 }

@@ -13,6 +13,6 @@ spring:
   security:
     oauth2:
       authorization:
-        check-token-access: isAuthenticated()
+        check-token-access: isAuthenticated() #이렇게 설정하면 /oauth/check_token(Client 검증받을 URI) URI 활성화
 server:
   port: 8081

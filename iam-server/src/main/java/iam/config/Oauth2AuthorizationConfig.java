@@ -1,5 +1,6 @@
 package iam.config;
 
+import iam.auth.IAMTokenEnhancer;
 import iam.auth.IAMUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +11,13 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
@@ -26,17 +29,23 @@ public class Oauth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     private final AuthenticationManager authenticationManager; // grant_type 변경 및 추가 사용을 위해서는 필수
     private final DataSource dataSource;
     private final IAMUserDetailService iamUserDetailService;
+
+    private final CustomJwtTokenConverter customJwtTokenConverter;
+    /* oauth Server 랑 동일한 key 값을 가지고 있어야 한다 !*/
     private final String jwtSignKey = "fn2jnbgfk2jbgfk2j";
 
     //endPoint 추가를 위한 설정
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        //token 값과 같이 보낼 값을 정해주는 부분 IAMTokenEnhancer 에서 같이 보낼 값 지정 해줌.
+        tokenEnhancerChain.setTokenEnhancers(List.of(new IAMTokenEnhancer(), this.jwtAccessTokenConverter()));
         endpoints
                 .tokenStore(tokenStore())
                 .authenticationManager(authenticationManager)
+                .tokenEnhancer(tokenEnhancerChain)
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .userDetailsService(iamUserDetailService);
-
     }
 
     /* token store로 JWTTokenStore를 사용하겠다 */

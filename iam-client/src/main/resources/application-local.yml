@@ -5,4 +5,4 @@ spring:
   security:
     oauth2:
       resource:
-        token-info-uri: http://localhost:8081/oauth/check_token
+        token-info-uri: http://localhost:8081/oauth/check_token #token 검증 uri spring 이 해당 설정을 읽고 bean 으로 등록해준다 !

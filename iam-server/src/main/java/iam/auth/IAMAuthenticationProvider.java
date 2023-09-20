@@ -1,5 +1,6 @@
 package iam.auth;
 
+import iam.dto.Member;
 import iam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,12 @@ public class IAMAuthenticationProvider implements AuthenticationProvider {
         //권한 인자 값 넘겨주는 부분
         //authorityList.add(new SimpleGrantedAuthority(findUser.get().getUserRole()));
         // UsernamePasswordAuthenticationToken param : this.principal = principal; this.credentials = credentials; super.setAuthenticated(true);
-        UserDetails userDetails = iamUserDetailService.loadUserByUsername(username);
+        User userDetails = (User)iamUserDetailService.loadUserByUsername(username);
+        Member member = Member.builder()
+                        .userName(userDetails.getName())
+                        .userPassword(userDetails.getPassword())
+                        .role(userDetails.getAuthorities().toString())
+                        .userId(userDetails.getId()).build();
         log.info("userDetails password : [{}]", userDetails.getPassword());
         //비밀번호 검증 부분
         if(!passwordEncoder.matches(password, userDetails.getPassword())) {
@@ -53,7 +59,11 @@ public class IAMAuthenticationProvider implements AuthenticationProvider {
 
         authorityList.add(new SimpleGrantedAuthority(userDetails.getAuthorities().toString()));
 
-        return new UsernamePasswordAuthenticationToken(username, password, authorityList);
+        UsernamePasswordAuthenticationToken responseToken = new UsernamePasswordAuthenticationToken(username, password, authorityList);
+        //token 값에 같이 보낼 정보 값 저장 하는 부분
+        responseToken.setDetails(member);
+        log.info("member save complete={}", member);
+        return responseToken;
 
     }
 
