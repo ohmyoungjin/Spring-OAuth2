@@ -2,6 +2,7 @@ package iam.config;
 
 import iam.auth.IAMTokenEnhancer;
 import iam.auth.IAMUserDetailService;
+import iam.auth.unused.CustomJwtTokenConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

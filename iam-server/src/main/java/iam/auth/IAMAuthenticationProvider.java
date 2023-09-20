@@ -60,7 +60,7 @@ public class IAMAuthenticationProvider implements AuthenticationProvider {
         authorityList.add(new SimpleGrantedAuthority(userDetails.getAuthorities().toString()));
 
         UsernamePasswordAuthenticationToken responseToken = new UsernamePasswordAuthenticationToken(username, password, authorityList);
-        //token 값에 같이 보낼 정보 값 저장 하는 부분
+        //token 값에 같이 보낼 정보 값 저장 하는 부분 param : Object
         responseToken.setDetails(member);
         log.info("member save complete={}", member);
         return responseToken;

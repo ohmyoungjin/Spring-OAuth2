@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * accessToken 과 함께 보낼 값 저장 하는 부분 해당 부분 사용하면 CustomJwtTokenConverter 사용 X
+ * 해당 기능 사용하기 위해서 AuthConfig 에 class 추가 해줘야 함 ex) tokenEnhancer(tokenEnhancerChain)
  */
 public class IAMTokenEnhancer implements TokenEnhancer {
 
