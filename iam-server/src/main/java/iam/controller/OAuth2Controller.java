@@ -19,7 +19,9 @@ import org.springframework.web.client.RestTemplate;
 public class OAuth2Controller {
 
     private final RestTemplate restTemplate;
-    //post man 사용 시 여기 부분은 타지 않는다 => post man ui 통해서 여기에 필요한 값 다 세팅 해서 던져 줌
+    // /oauth/token 호출 하게 되면 이 부분은 사용 하지 않음
+    // http://localhost:8081/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_url}&response_type=code&scope=read
+    // ex) http://localhost:8081/oauth/authorize?client_id=clientKey&redirect_uri=http://localhost:8081/oauth2/callback&response_type=code&scope=read
     // header 값 Authorization 에 username (clientId), Password (Secret) 담아서 던짐
     @GetMapping(value = "/callback")
     public void callback(@RequestParam String code) {
