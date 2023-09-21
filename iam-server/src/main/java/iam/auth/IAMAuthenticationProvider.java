@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 인증을 담당하는 class
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -45,6 +48,7 @@ public class IAMAuthenticationProvider implements AuthenticationProvider {
         //권한 인자 값 넘겨주는 부분
         //authorityList.add(new SimpleGrantedAuthority(findUser.get().getUserRole()));
         // UsernamePasswordAuthenticationToken param : this.principal = principal; this.credentials = credentials; super.setAuthenticated(true);
+        //유저 검증 부분
         User userDetails = (User)iamUserDetailService.loadUserByUsername(username);
         Member member = Member.builder()
                         .userName(userDetails.getName())
@@ -58,7 +62,7 @@ public class IAMAuthenticationProvider implements AuthenticationProvider {
         }
 
         authorityList.add(new SimpleGrantedAuthority(userDetails.getAuthorities().toString()));
-
+        //토큰 발급 부분
         UsernamePasswordAuthenticationToken responseToken = new UsernamePasswordAuthenticationToken(username, password, authorityList);
         //token 값에 같이 보낼 정보 값 저장 하는 부분 param : Object
         responseToken.setDetails(member);
